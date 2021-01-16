@@ -33,8 +33,8 @@
   let score = 0;
   let live = 3;
 
-  const brickRowCount = 5;
-  const brickColumnCount = 10;
+  const brickRowCount = 3;
+  const brickColumnCount = 6;
   const brickPadding = 10;
   const brickWidth = canvas.width / brickColumnCount - brickPadding;
   const brickHeight = 20;
@@ -139,8 +139,8 @@
         y += dy;
 
         if (paddleX < (x + dx) && (x + dx) < (paddleX + paddleWidth) && paddleY < (y + dy) && (y + dy) < (paddleY + paddleHeight)) {
-          dx = Math.round((2.5 * Math.atan(-((paddleX - x) + paddleWidth / 2) / 8)) * 100) / 100;
-          dy = -dy * 1.02;
+          dx = Math.round((dx + 0.6 * (2.5 * Math.atan(-((paddleX - x) + paddleWidth / 2) / 8))) * 100) / 100;
+          dy = -dy * 1.05;
           paddleColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
 
         }
