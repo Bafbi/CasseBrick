@@ -138,7 +138,7 @@
         x += dx;
         y += dy;
 
-        if (paddleX < (x + dx) && (x + dx) < (paddleX + paddleWidth) && paddleY < (y + dy) && (y + dy) < (paddleY + paddleHeight)) {
+        if (paddleX < (x + dx) && (x + dx) < (paddleX + paddleWidth) && paddleY < (y + dy)) {
           dx = Math.round((dx + 0.6 * (2.5 * Math.atan(-((paddleX - x) + paddleWidth / 2) / 8))) * 100) / 100;
           dy = -dy * 1.05;
           paddleColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
