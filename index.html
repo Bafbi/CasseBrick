@@ -1,223 +1,61 @@
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-    <meta property="og:title" content="CasseBrick" />
-    <meta property="og:type" content="game" />
-    <meta property="og:url" content="https://bafbi.github.io/CasseBrick/" />
-    <meta property="og:image" content="https://cdn.discordapp.com/attachments/676180251155365893/800129543591165972/unknown.png" />
-    <meta property="og:description" content="piti jeu" />
-    <meta charset="utf-8" />
-    <title>Gamedev Canvas Workshop</title>
-    <style>
-    	* { padding: 0; margin: 0; }
-    	canvas { background: #F79F97; display: block; margin: 0 auto; }
-    </style>
+  <meta property="og:title" content="CasseBrick" />
+  <meta property="og:type" content="game" />
+  <meta property="og:url" content="https://bafbi.github.io/CasseBrick/" />
+  <meta property="og:image" content="https://cdn.discordapp.com/attachments/676180251155365893/800129543591165972/unknown.png" />
+  <meta property="og:description" content="piti jeu" />
+  <meta charset="utf-8" />
+  <title>CasseBrick</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Texturina&display=swap" rel="stylesheet">
 </head>
-<body style="background-color:#611612;">
+<body>
+  <main>
+    <section class="game">
+      <div class="canvas">
+        <canvas id="myCanvas" class="casseBrick" width=560 height="420"></canvas>
+      </div>
+      
 
-<canvas id="myCanvas" width="480" height="320" style=></canvas>
+      <div class="configs">
+        <ul class="paddleSliders">
+          <li>
+            <span id="paddleWidthValue">error</span>
+            <input type="range" min="50" max="100" value="70" id="paddleWidthSlider">
+          </li>
+          <li>
+            <span id="paddleHeightValue">error</span>
+            <input type="range" min="5" max="20" value="10" id="paddleHeightSlider">
+          </li>
+        </ul>
+        <ul class="brickSliders">
+          <li>
+            <span id="brickRowCountValue">error</span>
+            <input type="range" min="1" max="6" value="3" id="brickRowCountSlider">
+          </li>
+          <li>
+            <span id="brickColumnCountValue">error</span>
+            <input type="range" min="1" max="12" value="6" id="brickColumnCountSlider">
+          </li>
+        </ul>
+        <button type="button" id="reloadValueButton" class="reloadValueButton" onclick="reloadValues()">Reload Configs</button>
+      </div>
+      <script src="casseBrick.js"></script>
+    </section>
 
-<script>
-  let canvas = document.getElementById("myCanvas");
-  let ctx = canvas.getContext("2d");
-  let x = canvas.width/2;
-  let y = canvas.height-50;
-  const baseDX = 1.5
-  const baseDY = -3
-  let dx = baseDX;
-  let dy = baseDY;
-  const ballRadius = 10;
-  let ballColor = "#0095DD"
-  let paddleColor = "#0095DD"
-  const paddleHeight = 10;
-  const paddleWidth = 75;
-  let paddleX = (canvas.width-paddleWidth)/2;
-  let paddleY = canvas.height-paddleHeight-10
-  let rightPressed = false;
-  let leftPressed = false;
-  let pause = false;
-  let score = 0;
-  let live = 3;
 
-  const brickRowCount = 3;
-  const brickColumnCount = 6;
-  const brickPadding = 10;
-  const brickWidth = canvas.width / brickColumnCount - brickPadding;
-  const brickHeight = 20;
-  const brickOffsetTop = 30;
-  const brickOffsetLeft = (canvas.width - (brickWidth + brickPadding) * brickColumnCount) + brickPadding / 2;
 
-  var bricks = [];
-  for(let c=0; c<brickColumnCount; c++) {
-    bricks[c] = [];
-    for(let r=0; r<brickRowCount; r++) {
-      bricks[c][r] = { x: 0, y: 0, status: 1 };
-    }
-  }
+    
+  </main>
+  
+  
 
-  draw();
-
-  function drawBricks() {
-    for(let c=0; c<brickColumnCount; c++) {
-        for(let r=0; r<brickRowCount; r++) {
-          if (bricks[c][r].status == 1) {
-            let brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-            let brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
-            bricks[c][r].x = brickX;
-            bricks[c][r].y = brickY;
-            ctx.beginPath();
-            ctx.rect(brickX, brickY, brickWidth, brickHeight);
-            ctx.fillStyle = "#0095DD";
-            ctx.fill();
-            ctx.closePath();
-          }
-
-        }
-    }
-  }
-
-  function bricksCollision() {
-    for(var c=0; c<brickColumnCount; c++) {
-        for(var r=0; r<brickRowCount; r++) {
-          if (bricks[c][r].status == 1) {
-            let brick = bricks[c][r];
-            if (x + dx > brick.x && x + dx < brick.x+brickWidth && y + dy > brick.y && y + dy < brick.y+brickHeight) {
-              brick.status = 0;
-              dy = -dy;
-              score++;
-              if (score == brickRowCount*brickColumnCount) {
-                alert(`Vous avez gagné avec ${score} points, Bravo!`);
-                document.location.reload();
-                clearInterval(interval);
-              }
-            }
-          }
-        }
-    }
-  }
-
-  function drawScore() {
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "#0095DD";
-    ctx.fillText(`Score : ${score}`, 8, 20);
-  }
-
-  function drawLive() {
-    ctx.font = "16xp Arial";
-    ctx.fillStyle = "#0095DD";
-    ctx.fillText(`Vie : ${live}`, canvas.width-65, 20);
-  }
-
-  function drawTest() {
-    ctx.font = "16xp Arial";
-    ctx.fillStyle = "#0095DD";
-    ctx.fillText(`Vitesse : ${dx}`, canvas.width / 2, 20);
-  }
-
-    function drawBall() {
-        ctx.beginPath();
-        ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-        ctx.fillStyle = ballColor;
-        ctx.fill();
-        ctx.closePath();
-    }
-
-    function drawPaddle() {
-      ctx.beginPath();
-      ctx.rect(paddleX, paddleY, paddleWidth, paddleHeight);
-      ctx.fillStyle = paddleColor;
-      ctx.fill();
-      ctx.closePath();
-    }
-
-    function draw() {
-      if (pause == false) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawBall();
-        drawPaddle();
-        drawBricks();
-        bricksCollision();
-        drawScore();
-        drawLive();
-        drawTest()
-
-        x += dx;
-        y += dy;
-
-        if (paddleX < (x + dx) && (x + dx) < (paddleX + paddleWidth) && paddleY < (y + dy)) {
-          dx = Math.round((dx + 0.6 * (2.5 * Math.atan(-((paddleX - x) + paddleWidth / 2) / 8))) * 100) / 100;
-          dy = -dy * 1.05;
-          paddleColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
-
-        }
-        else if (y + dy - ballRadius < 0) {
-          dy = -dy;
-          ballColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
-        }
-        else if (x + dx - ballRadius < 0 || x + dx + ballRadius > canvas.width) {
-          dx = -dx;
-          ballColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
-        }
-        else if (y + dy + ballRadius > canvas.height) {
-          live--
-          if (!live) {
-            alert("GAME OVER");
-            document.location.reload();
-            clearInterval(interval);
-          } else {
-            x = canvas.width / 2;
-            y = canvas. height - 30;
-            dx = baseDX;
-            dy = baseDY;
-          }
-
-        }
-
-        if(rightPressed && paddleX + paddleWidth < canvas.width) {
-          paddleX += 6;
-        }
-        else if(leftPressed && paddleX > 0) {
-          paddleX -= 6;
-        }
-      }
-      requestAnimationFrame(draw);
-    }
-
-    document.addEventListener("keydown", keyDownHandler, false);
-    document.addEventListener("keyup", keyUpHandler, false);
-    document.addEventListener("mousemove", mouseMoveHandler, false);
-
-    function mouseMoveHandler(e) {
-    let relativeX = e.offsetX;
-    let relativeY = e.offsetY;
-    if(relativeX > 0 && relativeX < canvas.width && relativeY > 0 && relativeY < canvas.height) {
-      paddleX = relativeX - paddleWidth/2;
-      }
-    }
-
-    function keyDownHandler(e) {
-      if(e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
-          rightPressed = true;
-      }
-      else if(e.key == "Left" || e.key == "ArrowLeft" || e.key == "q") {
-          leftPressed = true;
-      }
-      else if(e.key == "p" && !pause) {
-        pause = true
-      }
-      else if(e.key == "p" && pause) {
-        pause = false
-      }
-    }
-
-    function keyUpHandler(e) {
-        if(e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
-            rightPressed = false;
-        }
-        else if(e.key == "Left" || e.key == "ArrowLeft" || e.key == "q") {
-            leftPressed = false;
-        }
-    }
-</script>
+  <footer>
+    <a href="https://github.com/Bafbi/CasseBrick" title="Lien vers le projet sur github" target="_blank" class="lienGithub">Projet Github</a>
+  </footer>
 
 </body>
 </html>

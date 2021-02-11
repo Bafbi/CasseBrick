@@ -1,0 +1,81 @@
+* { padding: 0; margin: 0; font-family: Texturina,sans-serif; color: #c6c0a3;}
+main {
+  min-height: 100vh;
+  background: linear-gradient(to left top, #8AA766,  #A68D72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game{
+  background: linear-gradient(to right bottom, rgba(75, 75, 75, 0.3), rgba(75, 75, 75, 0.6));
+  min-height: 60vh;
+  width: 60%;
+  border-radius: 2rem;
+  z-index: 2;
+  backdrop-filter: blur(1.5rem);
+  display: flex;
+}
+
+.canvas {
+  flex: 2;
+  background: linear-gradient(to left, rgba(100, 70, 70, 0.0), rgba(126, 52, 52, 0.6));
+  border-radius: 2rem;
+  display: flex;
+}
+.configs {
+  flex: 1;
+  background: linear-gradient(to right, rgba(70, 80, 100, 0), rgba(52, 80, 126, 0.6));
+  border-radius: 2rem;
+}
+
+.casseBrick {
+  background: rgba(255, 255, 255, 0);
+  display: block; 
+  margin: auto;
+  border-radius: 1rem;
+  border: 1px dashed #701D0C;
+}
+
+.paddleSliders {
+  
+}
+ul {
+  list-style: none;
+}
+.reloadValueButton {
+  background: linear-gradient(to right, rgba(126, 52, 52, 0.6), rgba(52, 80, 126, 0.6));
+  border-radius: 5px;
+  padding: 2px 4px;
+}
+.reloadValueButton:hover {
+  color: #918D77;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 32px;
+    text-align: center;
+    width: 100%;
+    text-shadow: 0 1px 0 #000;
+    transition: .2s opacity linear;
+    font-size: 18px;
+    background: rgba(75, 75, 75, 0.3);
+}
+a {
+  outline: none;
+  text-decoration: none;
+  color: #c6c0a3;
+}
+a:hover {
+  color: #918D77;
+}
+a.lienGithub:active {
+  background: url('https://avatars2.githubusercontent.com/u/26836027?s=60&u=41b8b0f548f0dd18d206410802555ea9d181ffc7&v=4') no-repeat 100% 0;
+  background-size: 28px 28px;
+  padding-right: 34px;
+}
+
+
